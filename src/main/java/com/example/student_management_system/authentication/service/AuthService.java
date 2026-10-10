@@ -7,6 +7,10 @@ import com.example.student_management_system.authentication.model.Role;
 import com.example.student_management_system.authentication.model.User;
 import com.example.student_management_system.authentication.repository.UserRepository;
 import com.example.student_management_system.authentication.security.JwtService;
+import com.example.student_management_system.authentication.security.PasswordPolicy;
+
+import java.util.Locale;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+// Service class for handling user authentication, including signup and login operations.
 @Service
 public class AuthService {
 
@@ -35,6 +40,7 @@ public class AuthService {
         this.jwtService = jwtService;
     }
 
+    // Handles user signup by validating the request, checking for existing users, encoding the password, and saving the new user.
     public AuthResponse signup(SignupRequest request) {
         String email = normalizeEmail(request.getEmail());
         String password = request.getPassword();
@@ -42,6 +48,8 @@ public class AuthService {
         if (email.isEmpty() || password == null || password.isBlank()) {
             throw new IllegalArgumentException("Email and password are required");
         }
+
+        PasswordPolicy.validate(password, "Password");
 
         if (userRepository.existsByEmail(email)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already registered");
@@ -54,6 +62,7 @@ public class AuthService {
         return buildResponse(savedUser);
     }
 
+    // Handles user login by authenticating the provided credentials and generating a JWT token upon successful authentication.
     public AuthResponse login(LoginRequest request) {
         String email = normalizeEmail(request.getEmail());
         String password = request.getPassword();
@@ -73,6 +82,7 @@ public class AuthService {
         return buildResponse(user, userDetails);
     }
 
+    // Builds an AuthResponse containing the JWT token, email, and role of the authenticated user.
     private AuthResponse buildResponse(User user) {
         UserDetails userDetails = org.springframework.security.core.userdetails.User
                 .withUsername(user.getEmail())
@@ -87,8 +97,9 @@ public class AuthService {
         String token = jwtService.generateToken(userDetails);
         return new AuthResponse(token, user.getEmail(), user.getRole().name());
     }
-
+    
+    // Normalizes the email by trimming whitespace and converting it to lowercase.
     private String normalizeEmail(String email) {
-        return email == null ? "" : email.trim();
+        return email == null ? "" : email.trim().toLowerCase(Locale.ROOT);
     }
 }
