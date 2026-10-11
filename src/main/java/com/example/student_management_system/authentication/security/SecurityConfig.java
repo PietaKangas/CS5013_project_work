@@ -49,8 +49,9 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.POST, "/api/auth/login", "/api/auth/signup").permitAll()
                 .requestMatchers("/error").permitAll()
-                .requestMatchers("/api/admin/**", "/api/lead/**").hasRole("LEAD")
-                .requestMatchers("/api/student/**").hasRole("STUDENT")
+                .requestMatchers("/api/lead/**").hasRole("LEAD")
+                .requestMatchers("/api/students/me/**").hasRole("STUDENT")
+                .requestMatchers("/api/students/**").hasRole("LEAD")
                 .anyRequest().authenticated())
             .exceptionHandling(e -> e
                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))

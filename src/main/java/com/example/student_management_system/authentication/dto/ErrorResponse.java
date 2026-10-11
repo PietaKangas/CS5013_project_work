@@ -1,7 +1,8 @@
 package com.example.student_management_system.authentication.dto;
 
+// do later
+
 public class ErrorResponse {
-    // do later
     /*
     private final String message;
 

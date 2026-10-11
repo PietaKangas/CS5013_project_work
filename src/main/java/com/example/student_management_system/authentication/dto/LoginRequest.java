@@ -1,5 +1,9 @@
 package com.example.student_management_system.authentication.dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+
+// This class represents a request to log in a user with their email and password.
 public class LoginRequest {
 
     private String email;
@@ -7,7 +11,7 @@ public class LoginRequest {
 
     public LoginRequest() {}
 
-    public LoginRequest(String email, String password) {
+    public LoginRequest(@NotBlank @Email String email, @NotBlank String password) {
         this.email = email;
         this.password = password;
     }

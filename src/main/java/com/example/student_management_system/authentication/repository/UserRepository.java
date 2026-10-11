@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Lock;
 
 import java.util.Optional;
 
+// This interface provides methods for accessing and manipulating User entities in the database.
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
 

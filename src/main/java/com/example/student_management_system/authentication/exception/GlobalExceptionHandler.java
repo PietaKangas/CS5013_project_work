@@ -1,5 +1,6 @@
 // do later
- /*package com.example.student_management_system.authentication.exception;
+
+/*package com.example.student_management_system.authentication.exception;
 
 import com.example.student_management_system.authentication.dto.ErrorResponse;
 import org.springframework.http.HttpStatus;

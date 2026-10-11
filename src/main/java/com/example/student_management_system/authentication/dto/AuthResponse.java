@@ -1,5 +1,6 @@
 package com.example.student_management_system.authentication.dto;
 
+// This class represents a response after a successful authentication, containing the JWT token, user email, and role.
 public class AuthResponse {
 
     private String token;

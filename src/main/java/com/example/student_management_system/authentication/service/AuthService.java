@@ -8,8 +8,7 @@ import com.example.student_management_system.authentication.model.User;
 import com.example.student_management_system.authentication.repository.UserRepository;
 import com.example.student_management_system.authentication.security.JwtService;
 import com.example.student_management_system.authentication.security.PasswordPolicy;
-
-import java.util.Locale;
+import com.example.student_management_system.authentication.util.EmailNormalizer;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -42,7 +41,7 @@ public class AuthService {
 
     // Handles user signup by validating the request, checking for existing users, encoding the password, and saving the new user.
     public AuthResponse signup(SignupRequest request) {
-        String email = normalizeEmail(request.getEmail());
+        String email = EmailNormalizer.normalize(request.getEmail());
         String password = request.getPassword();
 
         if (email.isEmpty() || password == null || password.isBlank()) {
@@ -64,7 +63,7 @@ public class AuthService {
 
     // Handles user login by authenticating the provided credentials and generating a JWT token upon successful authentication.
     public AuthResponse login(LoginRequest request) {
-        String email = normalizeEmail(request.getEmail());
+        String email = EmailNormalizer.normalize(request.getEmail());
         String password = request.getPassword();
 
         if (email.isEmpty() || password == null || password.isBlank()) {
@@ -97,9 +96,5 @@ public class AuthService {
         String token = jwtService.generateToken(userDetails);
         return new AuthResponse(token, user.getEmail(), user.getRole().name());
     }
-    
-    // Normalizes the email by trimming whitespace and converting it to lowercase.
-    private String normalizeEmail(String email) {
-        return email == null ? "" : email.trim().toLowerCase(Locale.ROOT);
-    }
+
 }

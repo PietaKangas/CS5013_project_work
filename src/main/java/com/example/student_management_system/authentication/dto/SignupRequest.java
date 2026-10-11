@@ -1,5 +1,6 @@
 package com.example.student_management_system.authentication.dto;
 
+// This class represents a request to sign up a new user in the system.
 public class SignupRequest {
 
     private String email;

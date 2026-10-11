@@ -6,12 +6,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.example.student_management_system.authentication.util.EmailNormalizer;
+
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+// This service class implements a login rate limiter to prevent brute-force attacks by limiting the number of login attempts from a specific IP address or email within a defined time window.
 @Service
 public class LoginRateLimiter {
 
@@ -33,7 +36,7 @@ public class LoginRateLimiter {
 
     public void checkAllowed(String clientIp, String email) {
         String normalizedIp = normalizeKey(clientIp);
-        String normalizedEmail = normalizeKey(email);
+        String normalizedEmail = EmailNormalizer.normalize(email);
 
         for (String key : Arrays.asList("ip:" + normalizedIp, "email:" + normalizedEmail)) {
             AttemptState state = attempts.get(key);

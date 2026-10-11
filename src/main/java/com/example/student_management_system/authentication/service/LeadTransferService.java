@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+// This service class handles the transfer of the lead role from one user to another within the system.
 @Service
 public class LeadTransferService {
 
@@ -28,7 +29,9 @@ public class LeadTransferService {
         }
 
         String currentLeadEmail = authentication.getName();
-        User currentLead = userRepository.findByEmail(currentLeadEmail)
+
+        // Lock the current lead's row first
+        User currentLead = userRepository.findWithLockByEmail(currentLeadEmail)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Current lead not found"));
 
         if (currentLead.getRole() != Role.LEAD) {
@@ -42,11 +45,14 @@ public class LeadTransferService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Target user is already the LEAD");
         }
 
+        // Order matters: demote and flush first, so the "one LEAD" unique index is not violated.
         currentLead.changeRole(Role.STUDENT);
-        userRepository.saveAndFlush(currentLead);
+        userRepository.flush();
+        //userRepository.saveAndFlush(currentLead);
 
         targetUser.changeRole(Role.LEAD);
-        userRepository.saveAndFlush(targetUser);
+        userRepository.flush();
+        //userRepository.saveAndFlush(targetUser);
 
         return new LeadTransferResponse(currentLeadEmail, targetUser.getEmail(), "Leadership transferred successfully");
     }

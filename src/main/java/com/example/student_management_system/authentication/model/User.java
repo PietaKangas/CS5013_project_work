@@ -2,6 +2,7 @@ package com.example.student_management_system.authentication.model;
 
 import jakarta.persistence.*;
 
+// This class represents a user in the system, including their email, password hash, and role.
 @Entity
 @Table(name = "users")
 public class User {

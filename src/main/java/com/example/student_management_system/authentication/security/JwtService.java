@@ -3,7 +3,6 @@ package com.example.student_management_system.authentication.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-//import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,7 +33,7 @@ public class JwtService {
     }
 
     public String generateToken(UserDetails user) {
-        String role = user.getAuthorities().iterator().next().getAuthority(); // esim. ROLE_STUDENT
+        String role = user.getAuthorities().iterator().next().getAuthority();
         Date now = new Date();
         return Jwts.builder()
                 .subject(user.getUsername())
@@ -51,7 +50,6 @@ public class JwtService {
 
     public boolean isTokenValid(String token, UserDetails user) {
         try {
-            // parseClaims heittää poikkeuksen, jos allekirjoitus on väärä tai token vanhentunut
             return parseClaims(token).getSubject().equals(user.getUsername());
         } catch (JwtException | IllegalArgumentException e) {
             return false;

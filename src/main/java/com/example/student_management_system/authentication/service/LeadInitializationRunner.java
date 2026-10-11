@@ -14,6 +14,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
+
+// This class is responsible for initializing a lead user during application startup if no lead user exists in the database.
+// It checks for the presence of lead credentials in the environment and creates a lead user accordingly.
 @Component
 public class LeadInitializationRunner implements ApplicationRunner {
 

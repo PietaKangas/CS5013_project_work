@@ -6,6 +6,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+// This service class implements the UserDetailsService interface to load user-specific data during authentication.
+// It retrieves user details from the UserRepository based on the provided email address.
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
@@ -20,11 +22,11 @@ public class CustomUserDetailsService implements UserDetailsService {
         var user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + email));
 
-        // Täysi nimi, koska oma User-luokkamme on samanniminen
+        
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getEmail())
                 .password(user.getPasswordHash())
-                .roles(user.getRole().name()) // lisää automaattisesti ROLE_-etuliitteen
+                .roles(user.getRole().name()) 
                 .build();
     }
 }

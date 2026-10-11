@@ -6,7 +6,7 @@ import java.util.Locale;
 import java.util.Set;
 
 public final class PasswordPolicy {
-
+/*
     private static final int MIN_LENGTH = 12;
     private static final int MAX_LENGTH_BYTES = 72;
     private static final Set<String> COMMON_PASSWORDS = Set.of(
@@ -39,8 +39,7 @@ public final class PasswordPolicy {
     }
 }
 
-/*public final class PasswordPolicy {
-
+*/
     private static final int MIN_LENGTH = 12;
     private static final int MAX_LENGTH_BYTES = 72;
 
@@ -54,10 +53,10 @@ public final class PasswordPolicy {
 
         int length = password.codePointCount(0, password.length());
         if (length < MIN_LENGTH) {
-            throw new IllegalArgumentException("Password must be at least 12 characters long.");
+            throw new IllegalArgumentException(fieldName + " must be at least " + MIN_LENGTH + " characters long.");
         }
         if (password.getBytes(StandardCharsets.UTF_8).length > MAX_LENGTH_BYTES) {
-            throw new IllegalArgumentException("Password must be at most 72 bytes long.");
+            throw new IllegalArgumentException(fieldName + " must be at most " + MAX_LENGTH_BYTES + " bytes long.");
         }
     }
-}*/
+}

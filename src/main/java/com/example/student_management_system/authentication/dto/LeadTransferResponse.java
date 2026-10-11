@@ -1,5 +1,6 @@
 package com.example.student_management_system.authentication.dto;
-
+ 
+// This class represents a response after transferring the lead role from one user to another.
 public class LeadTransferResponse {
 
     private String currentLeadEmail;
